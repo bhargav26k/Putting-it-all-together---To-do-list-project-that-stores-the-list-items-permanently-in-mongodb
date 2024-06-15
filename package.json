@@ -1,0 +1,20 @@
+{
+  "name": "putting-it-all-together---to-do-list-project-that-stores-the-list-items-permanently-in-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bhargav karlapudi",
+  "license": "ISC",
+  "dependencies": {
+    "@netlify/functions": "^2.7.0",
+    "@types/express": "^4.17.21",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "mongoose": "^8.2.2",
+    "serverless-http": "^3.2.0"
+  }
+}
