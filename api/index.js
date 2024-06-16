@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Replace with your MongoDB Atlas connection string
-const mongoAtlasUri = "mongodb+srv://bhargav26k:Bhargav@54321@dynamictasktracker.wudkwj7.mongodb.net/?retryWrites=true&w=majority&appName=dynamictasktracker";
+const mongoAtlasUri = "mongodb+srv://bhargav26k:brgv@dynamictasktracker.wudkwj7.mongodb.net/?retryWrites=true&w=majority&appName=dynamictasktracker";
 
 mongoose.connect(mongoAtlasUri, {
     useNewUrlParser: true,
