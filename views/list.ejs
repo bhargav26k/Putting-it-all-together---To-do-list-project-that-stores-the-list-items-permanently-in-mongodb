@@ -11,19 +11,25 @@
         <h1>Todo list</h1>
     </div>
     <div class="box">
-
-       <% dayej.forEach(function(items){ %>
+        <% dayej.forEach(function(items){ %>
         <form action="/delete" method="POST">
             <div class="item">
                 <input type="checkbox" id="checkbox1" name="checkbox1" value="<%= items._id %>" onchange="this.form.submit()"> 
                 <p><%= items.name %></p>
             </div>
         </form>
-        
         <% }) %>
-
+        
         <form action="/" method="POST">
-            <input type="text" name="ele1" placeholder="Enter the task">
+            <input type="text" name="ele1" placeholder="Enter the task" required>
+            <!-- Add additional fields here if needed -->
+            <!-- <input type="text" name="description" placeholder="Description"> -->
+            <!-- <input type="date" name="dueDate" placeholder="Due Date"> -->
+            <!-- <select name="priority">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select> -->
             <button type="submit">+</button>
         </form>
     </div>

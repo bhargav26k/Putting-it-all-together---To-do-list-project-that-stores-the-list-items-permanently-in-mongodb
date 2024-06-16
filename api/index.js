@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -7,8 +6,8 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// Replace with your MongoDB Atlas connection string
-const mongoAtlasUri = "mongodb+srv://bhargav26k:brgv@dynamictasktracker.wudkwj7.mongodb.net/?retryWrites=true&w=majority&appName=dynamictasktracker";
+// MongoDB Atlas connection string
+const mongoAtlasUri = "mongodb+srv://bhargav26k:brgv@dynamictasktracker.wudkwj7.mongodb.net/dynamictasktracker?retryWrites=true&w=majority";
 
 mongoose.connect(mongoAtlasUri, {
     useNewUrlParser: true,
@@ -18,7 +17,7 @@ mongoose.connect(mongoAtlasUri, {
 
 // Extend schema with more fields for a professional task tracker
 const taskSchema = new mongoose.Schema({
-    name: String,
+    name: { type: String, required: true },
     description: String,
     dueDate: Date,
     priority: String
@@ -54,9 +53,11 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
     const { ele1: name, description, dueDate, priority } = req.body;
+    console.log("Received form data:", req.body); // Debugging statement
     const newTask = new Task({ name, description, dueDate, priority });
     try {
         await newTask.save();
+        console.log("Task saved successfully:", newTask); // Debugging statement
         res.redirect("/");
     } catch (err) {
         console.error("Error saving task:", err);
@@ -66,8 +67,10 @@ app.post("/", async (req, res) => {
 
 app.post("/delete", async (req, res) => {
     const checked = req.body.checkbox1;
+    console.log("Deleting task with ID:", checked); // Debugging statement
     try {
         await Task.findByIdAndDelete(checked);
+        console.log("Task deleted successfully"); // Debugging statement
         res.redirect("/");
     } catch (err) {
         console.error("Error deleting task:", err);
