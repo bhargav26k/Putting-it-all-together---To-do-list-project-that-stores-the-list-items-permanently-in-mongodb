@@ -1,53 +1,66 @@
+
 const express = require("express");
 const bodyParser = require("body-parser");
-var app = express();
-app.set("view engine","ejs");
-app.use(express.urlencoded({extended:true}));
-app.use(express.static('public'));
+const mongoose = require("mongoose");
 
-const mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017/todo");
+const app = express();
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+// Replace with your MongoDB Atlas connection string
+const mongoAtlasUri = "mongodb+srv://bhargav26k:Bhargav@54321@dynamictasktracker.wudkwj7.mongodb.net/?retryWrites=true&w=majority&appName=dynamictasktracker";
+
+mongoose.connect(mongoAtlasUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+}).then(() => console.log("Database connected successfully"))
+  .catch(err => console.error("Database connection error:", err));
+
 const trySchema = new mongoose.Schema({
     name: String
 });
-const item = mongoose.model("task",trySchema);
-const todo = new item({
-    name: "Create some videos"
+const Item = mongoose.model("Task", trySchema);
+
+app.get("/", async (req, res) => {
+    try {
+        const foundItems = await Item.find({});
+        res.render("list", { dayej: foundItems });
+    } catch (err) {
+        console.error("Error fetching items:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
-const todo2 = new item({
-    name: "Learn DSA"
-});
-const todo3 = new item({
-    name: "Learn React"
-});
-const todo4 = new item({
-    name: "Take some rest"
-});
-// todo2.save();
-// todo3.save();
-// todo4.save();
-app.get("/",function(req,res){
-    item.find({}).then(function(foundItems){
-            res.render("list",{dayej: foundItems});
-        
-    });
-});
-app.post("/",function(req,res){
+
+app.post("/", async (req, res) => {
     const itemName = req.body.ele1;
-    const todo4 = new item({
-        name : itemName
+    const newItem = new Item({
+        name: itemName
     });
-    todo4.save();
-    res.redirect("/");
+    try {
+        await newItem.save();
+        res.redirect("/");
+    } catch (err) {
+        console.error("Error saving item:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-app.post("/delete",function(req,res){
+app.post("/delete", async (req, res) => {
     const checked = req.body.checkbox1;
-    item.findByIdAndDelete(checked).then(function(){
-            res.redirect("/");
-    });
+    try {
+        await Item.findByIdAndDelete(checked);
+        res.redirect("/");
+    } catch (err) {
+        console.error("Error deleting item:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
-app.listen("5000",function(){
-    console.log("Server is running");
+app.listen(5000, () => {
+    console.log("Server is running on port 5000");
 });
+
+module.exports = app;
