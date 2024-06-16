@@ -14,8 +14,6 @@ const mongoAtlasUri = "mongodb+srv://bhargav26k:brgv@dynamictasktracker.wudkwj7.
 mongoose.connect(mongoAtlasUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
 }).then(() => console.log("Database connected successfully"))
   .catch(err => console.error("Database connection error:", err));
 
@@ -59,7 +57,7 @@ app.post("/delete", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
+app.listen(5000, () => {
     console.log("Server is running on port 5000");
 });
 
